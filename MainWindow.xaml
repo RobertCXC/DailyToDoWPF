@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DailyToDo"
         xmlns:vm="clr-namespace:DailyToDo.ViewModels"
+        xmlns:controls="clr-namespace:DailyToDo.Controls"
         mc:Ignorable="d"
         Title="Daily ToDo" Height="600" Width="350"
         WindowStartupLocation="CenterScreen">
@@ -135,10 +136,18 @@
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="*"/>
-
                                 </Grid.ColumnDefinitions>
 
-                                <CheckBox Grid.Column="0" IsChecked="{Binding IsCompleted}" Style="{StaticResource RoundCheckBoxStyle}" VerticalAlignment="Center"/>
+                                <!-- Confetti Control (behind everything) -->
+                                <controls:ConfettiControl x:Name="ConfettiEffect" Grid.Column="0" Grid.ColumnSpan="2" 
+                                                         Width="350" Height="58" 
+                                                         HorizontalAlignment="Left" VerticalAlignment="Center"
+                                                         Panel.ZIndex="100"/>
+
+                                <CheckBox Grid.Column="0" IsChecked="{Binding IsCompleted}" 
+                                         Style="{StaticResource RoundCheckBoxStyle}" 
+                                         VerticalAlignment="Center"
+                                         Checked="CheckBox_Checked"/>
                                 
                                 <TextBlock Grid.Column="1" Text="{Binding Title}" VerticalAlignment="Center" Margin="15,0,10,0" 
                                            FontSize="15" TextTrimming="CharacterEllipsis">

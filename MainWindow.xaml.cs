@@ -28,5 +28,30 @@ namespace DailyToDo
         {
             Close();
         }
+
+        private void CheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            // Find the ConfettiControl in the visual tree
+            if (sender is System.Windows.Controls.CheckBox checkBox)
+            {
+                var parent = System.Windows.Media.VisualTreeHelper.GetParent(checkBox);
+                while (parent != null && !(parent is System.Windows.Controls.Grid))
+                {
+                    parent = System.Windows.Media.VisualTreeHelper.GetParent(parent);
+                }
+
+                if (parent is System.Windows.Controls.Grid grid)
+                {
+                    foreach (var child in grid.Children)
+                    {
+                        if (child is Controls.ConfettiControl confetti)
+                        {
+                            confetti.Burst();
+                            break;
+                        }
+                    }
+                }
+            }
+        }
     }
 }

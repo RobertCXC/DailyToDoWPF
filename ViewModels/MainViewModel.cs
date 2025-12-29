@@ -76,15 +76,18 @@ namespace DailyToDo.ViewModels
             }
         }
 
-        private void Task_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+        private async void Task_PropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(TaskItem.IsCompleted))
             {
                 if (sender is TaskItem task)
                 {
-                    // Delay execution to let the binding update complete, though not strictly necessary for simple property changes
-                    // Using Dispatcher or just running directly. 
-                    // Direct manipulation of ObservableCollection is usually fine on UI thread.
+                    // Wait for confetti animation to complete (1.2 seconds)
+                    // Animation duration is 0.6-1.0 seconds, so 1.2s ensures it's finished
+                    if (task.IsCompleted)
+                    {
+                        await System.Threading.Tasks.Task.Delay(1200);
+                    }
                     MoveTask(task);
                 }
             }
