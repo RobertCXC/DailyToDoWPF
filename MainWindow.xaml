@@ -141,7 +141,20 @@
                                 <CheckBox Grid.Column="0" IsChecked="{Binding IsCompleted}" Style="{StaticResource RoundCheckBoxStyle}" VerticalAlignment="Center"/>
                                 
                                 <TextBlock Grid.Column="1" Text="{Binding Title}" VerticalAlignment="Center" Margin="15,0,10,0" 
-                                           FontSize="15" Foreground="{StaticResource TextPrimary}" TextTrimming="CharacterEllipsis"/>
+                                           FontSize="15" TextTrimming="CharacterEllipsis">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Foreground" Value="{StaticResource TextPrimary}"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsCompleted}" Value="True">
+                                                    <Setter Property="TextDecorations" Value="Strikethrough"/>
+                                                    <Setter Property="Foreground" Value="{StaticResource TextSecondary}"/>
+                                                    <Setter Property="Opacity" Value="0.6"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
                                 
 
                             </Grid>
