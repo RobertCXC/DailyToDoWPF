@@ -1,0 +1,69 @@
+# ======================
+# .NET / C# 通用
+# ======================
+bin/
+obj/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.cache
+*.log
+
+# ======================
+# Visual Studio
+# ======================
+.vs/
+.vscode/
+*.vsix
+
+# ======================
+# Rider / JetBrains
+# ======================
+.idea/
+*.iml
+
+# ======================
+# Avalonia
+# ======================
+# Avalonia XAML 设计器缓存
+*.axaml.cache
+*.axaml.g.cs
+
+# Avalonia 运行时生成文件
+Avalonia.Diagnostics*
+
+# ======================
+# NuGet
+# ======================
+.nuget/
+packages/
+*.nupkg
+*.snupkg
+
+# ======================
+# 发布 / 构建输出
+# ======================
+artifacts/
+publish/
+Release/
+Debug/
+
+# ======================
+# 测试 / 覆盖率
+# ======================
+TestResults/
+coverage/
+*.coverage
+*.coveragexml
+
+# ======================
+# 系统文件
+# ======================
+.DS_Store
+Thumbs.db
+
+# ======================
+# 本地配置（如果有）
+# ======================
+appsettings.Development.json
