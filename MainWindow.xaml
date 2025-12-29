@@ -172,11 +172,53 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 
-                <Path Grid.Column="0" Data="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" Fill="White" 
-                      Width="20" Height="20" Stretch="Uniform" Margin="15,0,0,0" VerticalAlignment="Center"/>
+                <!-- Add Button -->
+                <Button Grid.Column="0" Command="{Binding AddTaskCommand}" Background="Transparent" BorderThickness="0" Margin="10,0,0,0" VerticalAlignment="Center">
+                    <Path Data="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" Fill="White" Width="20" Height="20" Stretch="Uniform"/>
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Background="{TemplateBinding Background}">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Opacity" Value="0.8"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
                 
-                <TextBlock Grid.Column="1" Text="添加任务" VerticalAlignment="Center" Margin="15,0,0,0" 
-                           FontSize="15" Foreground="White" Opacity="0.9"/>
+                <!-- Input Area with Placeholder -->
+                <Grid Grid.Column="1" Margin="10,0,10,0" VerticalAlignment="Center">
+                    <TextBlock Text="添加任务" Foreground="#CCFFFFFF" FontSize="15" IsHitTestVisible="False" VerticalAlignment="Center">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding NewTaskTitle}" Value="">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding NewTaskTitle}" Value="{x:Null}">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                    <TextBox Text="{Binding NewTaskTitle, UpdateSourceTrigger=PropertyChanged}" 
+                             FontSize="15" Background="Transparent" BorderThickness="0" Foreground="White" CaretBrush="White">
+                        <TextBox.InputBindings>
+                            <KeyBinding Key="Enter" Command="{Binding AddTaskCommand}"/>
+                        </TextBox.InputBindings>
+                    </TextBox>
+                </Grid>
             </Grid>
         </Border>
 

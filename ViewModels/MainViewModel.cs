@@ -14,6 +14,19 @@ namespace DailyToDo.ViewModels
 
         public string CurrentDate => DateTime.Now.ToString("M月d日 dddd", CultureInfo.CreateSpecificCulture("zh-CN"));
 
+        private string? _newTaskTitle;
+        public string? NewTaskTitle
+        {
+            get => _newTaskTitle;
+            set
+            {
+                _newTaskTitle = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ICommand AddTaskCommand { get; }
+
         public MainViewModel()
         {
             Tasks = new ObservableCollection<TaskItem>
@@ -31,6 +44,18 @@ namespace DailyToDo.ViewModels
             }
 
             Tasks.CollectionChanged += Tasks_CollectionChanged;
+
+            AddTaskCommand = new RelayCommand(AddTask);
+        }
+
+        private void AddTask(object? parameter)
+        {
+            if (string.IsNullOrWhiteSpace(NewTaskTitle)) return;
+
+            var newTask = new TaskItem { Title = NewTaskTitle, IsCompleted = false };
+            newTask.PropertyChanged += Task_PropertyChanged;
+            Tasks.Insert(0, newTask);
+            NewTaskTitle = string.Empty;
         }
 
         private void Tasks_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
