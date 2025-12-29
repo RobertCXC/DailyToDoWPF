@@ -1,9 +1,11 @@
 name: WPF Release (.NET 10)
 
 on:
+  # 只有 push tag 才触发 Release
   push:
     tags:
       - 'v*'
+  # 手动触发 Workflow（不会创建 Release）
   workflow_dispatch:
 
 jobs:
@@ -11,18 +13,22 @@ jobs:
     runs-on: windows-latest
 
     steps:
+    # 1️⃣ Checkout 仓库
     - name: Checkout code
       uses: actions/checkout@v4
 
+    # 2️⃣ 安装 .NET 10 SDK
     - name: Setup .NET 10
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: '10.0.x'
         include-prerelease: true
 
-    - name: Restore
+    # 3️⃣ Restore NuGet 包
+    - name: Restore dependencies
       run: dotnet restore
 
+    # 4️⃣ Publish Release 版本
     - name: Publish (Release)
       run: |
         dotnet publish `
@@ -33,19 +39,23 @@ jobs:
           -p:IncludeNativeLibrariesForSelfExtract=true `
           -o publish
 
+    # 5️⃣ 打 zip
     - name: Zip artifact
       run: |
         Compress-Archive `
           -Path publish\* `
           -DestinationPath WpfApp-${{ github.ref_name }}-net10.zip
 
+    # 6️⃣ 上传 Artifact（无论分支还是 tag 都能下载）
     - name: Upload Artifact
       uses: actions/upload-artifact@v4
       with:
         name: WpfApp-net10
         path: WpfApp-${{ github.ref_name }}-net10.zip
 
+    # 7️⃣ 自动创建 GitHub Release（仅 tag 触发）
     - name: Create GitHub Release
+      if: startsWith(github.ref, 'refs/tags/')
       uses: softprops/action-gh-release@v2
       with:
         files: WpfApp-${{ github.ref_name }}-net10.zip
