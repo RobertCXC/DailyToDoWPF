@@ -1,10 +1,9 @@
 using DailyToDo.Models;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
-using System;
-using System.Globalization;
 
 namespace DailyToDo.ViewModels
 {
@@ -29,19 +28,12 @@ namespace DailyToDo.ViewModels
 
         public MainViewModel()
         {
-            Tasks = new ObservableCollection<TaskItem>
-            {
-                new TaskItem { Title = "开个 doll 聚餐两餐产品海带叫", IsCompleted = false },
-                new TaskItem { Title = "你像花落冬令时想", IsCompleted = false },
-                new TaskItem { Title = "来说有快死顶多 sk", IsCompleted = false },
-                new TaskItem { Title = "多想学怪冷新增肯", IsCompleted = false },
-                new TaskItem { Title = "程序陈奕迅抽或许", IsCompleted = false }
-            };
+            Tasks = new ObservableCollection<TaskItem> { };
 
-            foreach (var task in Tasks)
-            {
-                task.PropertyChanged += Task_PropertyChanged;
-            }
+            //foreach (var task in Tasks)
+            //{
+            //    task.PropertyChanged += Task_PropertyChanged;
+            //}
 
             Tasks.CollectionChanged += Tasks_CollectionChanged;
 
@@ -54,7 +46,7 @@ namespace DailyToDo.ViewModels
 
             var newTask = new TaskItem { Title = NewTaskTitle, IsCompleted = false };
             newTask.PropertyChanged += Task_PropertyChanged;
-            Tasks.Insert(0, newTask);
+            Tasks.Add(newTask);
             NewTaskTitle = string.Empty;
         }
 
