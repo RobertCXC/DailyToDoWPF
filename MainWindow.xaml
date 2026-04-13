@@ -8,6 +8,7 @@
         xmlns:controls="clr-namespace:DailyToDo.Controls"
         mc:Ignorable="d"
         Title="Daily ToDo" Height="600" Width="350"
+        Icon="pack://application:,,,/Assets/app.ico"
         WindowStartupLocation="CenterScreen">
     
     <WindowChrome.WindowChrome>
