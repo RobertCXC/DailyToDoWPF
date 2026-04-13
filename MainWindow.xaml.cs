@@ -9,6 +9,15 @@ namespace DailyToDo
         {
             InitializeComponent();
             DataContext = new MainViewModel();
+            Closing += MainWindow_Closing;
+        }
+
+        private void MainWindow_Closing(object? sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (DataContext is MainViewModel viewModel)
+            {
+                viewModel.SavePendingTasks();
+            }
         }
 
         private void PinBtn_Click(object sender, RoutedEventArgs e)
