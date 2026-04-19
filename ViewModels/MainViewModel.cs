@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -153,13 +154,19 @@ namespace DailyToDo.ViewModels
                     })
                     .ToList();
 
+                if (File.Exists(_storageFilePath))
+                {
+                    // Hidden files can fail to be overwritten on Windows, so normalize first.
+                    File.SetAttributes(_storageFilePath, FileAttributes.Normal);
+                }
+
                 var json = JsonSerializer.Serialize(pendingTasks, JsonOptions);
                 File.WriteAllText(_storageFilePath, json);
                 File.SetAttributes(_storageFilePath, FileAttributes.Hidden);
             }
-            catch
+            catch (Exception ex)
             {
-                // Ignore local persistence errors so the UI keeps working.
+                Debug.WriteLine($"Failed to save pending tasks: {ex}");
             }
         }
 
@@ -185,9 +192,9 @@ namespace DailyToDo.ViewModels
                     });
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                // Ignore corrupted cache files and start with an empty list.
+                Debug.WriteLine($"Failed to load pending tasks: {ex}");
             }
         }
 
