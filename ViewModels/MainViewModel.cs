@@ -21,7 +21,7 @@ namespace DailyToDo.ViewModels
 
         public ObservableCollection<TaskItem> Tasks { get; set; }
 
-        public string CurrentDate => DateTime.Now.ToString("M月d日 dddd", CultureInfo.CreateSpecificCulture("zh-CN"));
+        public string CurrentDate => DateTime.Now.ToString("M\u6708d\u65e5 dddd", CultureInfo.CreateSpecificCulture("zh-CN"));
 
         private string? _newTaskTitle;
         public string? NewTaskTitle
@@ -53,11 +53,14 @@ namespace DailyToDo.ViewModels
                 return;
             }
 
-            Tasks.Add(new TaskItem
+            var newTask = new TaskItem
             {
                 Title = NewTaskTitle.Trim(),
                 IsCompleted = false
-            });
+            };
+
+            Tasks.Insert(0, newTask);
+            MoveTask(newTask);
 
             NewTaskTitle = string.Empty;
             SavePendingTasks();
@@ -111,26 +114,30 @@ namespace DailyToDo.ViewModels
 
         private void MoveTask(TaskItem task)
         {
-            var oldIndex = Tasks.IndexOf(task);
-            if (oldIndex < 0)
+            if (!Tasks.Contains(task))
             {
                 return;
             }
 
             if (task.IsCompleted)
             {
-                if (oldIndex < Tasks.Count - 1)
-                {
-                    Tasks.Move(oldIndex, Tasks.Count - 1);
-                }
+                MoveToIndex(task, Tasks.Count - 1);
             }
             else
             {
-                if (oldIndex > 0)
-                {
-                    Tasks.Move(oldIndex, 0);
-                }
+                MoveToIndex(task, 0);
             }
+        }
+
+        private void MoveToIndex(TaskItem task, int newIndex)
+        {
+            var oldIndex = Tasks.IndexOf(task);
+            if (oldIndex < 0 || oldIndex == newIndex)
+            {
+                return;
+            }
+
+            Tasks.Move(oldIndex, newIndex);
         }
 
         public void SavePendingTasks()
